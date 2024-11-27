@@ -1,5 +1,5 @@
 <script setup>
-import { reactive ,computed,onMounted } from 'vue'
+import { reactive ,computed,onMounted,watch, ref } from 'vue'
 import {useProvinceStore} from '../stores/status'
 
 const formData = reactive({
@@ -13,12 +13,22 @@ const formData = reactive({
   }
 })
 
+const eventFtn = ref(false)
+
 const provinceStore = useProvinceStore()
 
 onMounted ( async () => {
   await provinceStore.loadData()
 })
 
+watch(()=>{
+  const firstname= formData.firstname
+
+  if(firstname == ''){
+    return eventFtn = true
+  }
+
+})
 
 
 const addeData = () =>{
@@ -123,7 +133,7 @@ const fullname = computed(() => {
 
     .status{
         display: grid;
-        grid-template-columns: auto;
+        grid-template-columns: auto auto;
         gap: 10px;
         padding: 20px;
     }
