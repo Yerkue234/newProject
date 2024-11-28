@@ -13,7 +13,15 @@ const formData = reactive({
   }
 })
 
-const eventFtn = ref(false)
+
+
+const error = ref({
+  ftname : null,
+  ltname : null,
+  phNum : null,
+})
+
+const isVali = ref('')
 
 const provinceStore = useProvinceStore()
 
@@ -21,14 +29,52 @@ onMounted ( async () => {
   await provinceStore.loadData()
 })
 
-watch(()=>{
-  const firstname= formData.firstname
-
-  if(firstname == ''){
-    return eventFtn = true
+watch(formData, (newValue) =>{
+  isVali.value = true
+  error.value = {}
+  if(newValue.firstname){
+    if(!validateFtname(newValue.firstname)){
+      isVali.value = false
+    }
   }
-
+  if(newValue.lastname){
+    if(!validateLtname(newValue.lastname)){
+      isVali.value = false
+    }
+  }
 })
+
+const validateFtname = (newValue) => {
+  const numberPattern = /\d/
+  if (!newValue){
+    error.value.ftname = 'Firstname required'
+    isVali.value = !isVali.value
+    console.log('firstname : ' , isVali.value);
+  }
+  else if (numberPattern.test(newValue)){
+    error.value.ftname = 'Firstname have number'
+    isVali.value = !isVali.value
+    console.log('firstname : ' , isVali.value);
+  }
+  else {
+    error.value.ftname = null
+  }
+}
+
+const validateLtname = (newValue) => {
+  const numberPattern = /\d/
+  if(!newValue){
+    error.value.ltname = 'Lastname required'
+    return false
+  }
+  else if (numberPattern.test(newValue)){
+    error.value.ltname = 'Lastname have number'
+    return false
+  }else {
+    error.value.ltname = null
+  }
+}
+
 
 
 const addeData = () =>{
@@ -53,10 +99,12 @@ const fullname = computed(() => {
         <div class="from_input">
           Firstname:
           <input type="text" v-model="formData.firstname">
+          <div v-if="error.ftname">{{ error.ftname }}</div>
         </div>
         <div class="from_input">
           Lastname:
           <input type="text" v-model="formData.lastname">
+          <div v-if="error.ltname">{{ error.ltname }}</div>
         </div>
         <div class="from_input">
           Phone number : <span style="padding: 0 10px 0 0">+856</span>
