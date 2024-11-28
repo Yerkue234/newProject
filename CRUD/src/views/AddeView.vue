@@ -15,65 +15,126 @@ const formData = reactive({
 
 
 
+
+
 const error = ref({
   ftname : null,
   ltname : null,
   phNum : null,
 })
 
-const isVali = ref('')
 
 const provinceStore = useProvinceStore()
 
-onMounted ( async () => {
-  await provinceStore.loadData()
-})
+const isvali = ref('')
 
-watch(formData, (newValue) =>{
-  isVali.value = true
-  error.value = {}
-  if(newValue.firstname){
-    if(!validateFtname(newValue.firstname)){
-      isVali.value = false
-    }
-  }
-  if(newValue.lastname){
-    if(!validateLtname(newValue.lastname)){
-      isVali.value = false
-    }
-  }
-})
-
-const validateFtname = (newValue) => {
+const validatename = (newValue) =>{
   const numberPattern = /\d/
-  if (!newValue){
-    error.value.ftname = 'Firstname required'
-    isVali.value = !isVali.value
-    console.log('firstname : ' , isVali.value);
-  }
-  else if (numberPattern.test(newValue)){
-    error.value.ftname = 'Firstname have number'
-    isVali.value = !isVali.value
-    console.log('firstname : ' , isVali.value);
-  }
-  else {
-    error.value.ftname = null
-  }
-}
-
-const validateLtname = (newValue) => {
-  const numberPattern = /\d/
+    
   if(!newValue){
-    error.value.ltname = 'Lastname required'
-    return false
+    error.value.ftname = 'firstname required'
+    isvali.value =false
+    console.log('firstname :',isvali.value);
   }
   else if (numberPattern.test(newValue)){
-    error.value.ltname = 'Lastname have number'
-    return false
+    error.value.ftname = 'firstname is number'
+    isvali.value = false
+    console.log('firstname :',isvali.value);
   }else {
-    error.value.ltname = null
+    error.value.ftname= null
   }
-}
+} 
+const validatelname = (newValue) => {
+    const number = /\d/
+    
+    if(!newValue){
+      error.value.ltname = 'lastname required'
+      isvali.value =!isvali.value
+      console.log('lastname :',isvali.value);
+    }
+    else if (number.test(formData.lastname)){
+      error.value.ltname = 'lastname is number'
+      isvali.value = !isvali.value
+      console.log('lastname :',isvali.value);
+    }else {
+      error.value.ltname = null
+      if(formData.firstname){
+        error.value.ftname = null
+      }else{
+        error.value.ftname = 'firstname required'
+        isvali.value =false
+        console.log('firstname :',isvali.value);
+      }
+    }
+  }
+
+  const validatePhnum = () =>{
+    // const phonePattern = /^[0-9]+$/
+    const phonePttern = [1,2,3,4,5,6,7,8]
+    if(!formData.phNumber){
+      error.value.phNum = 'phone number required'
+    }
+    else{
+      if ( formData.phNumber.length < phonePttern.length){
+      error.value.phNum = 'your number phone incorrect'
+      }else {
+        error.value.phNum = null
+      }
+      if(formData.firstname){
+        error.value.ftname = null
+      }else {
+        error.value.ftname = 'firstname required'
+        isvali.value =false
+        console.log('firstname :',isvali.value);
+      }
+      if(formData.lastname){
+        error.value.ltname = null
+      }else {
+        error.value.ltname = 'firstname required'
+        isvali.value =false
+        console.log('lastname :',isvali.value);
+      }
+    }
+  }
+
+
+onMounted(async () => {
+  await provinceStore.loadData()
+
+})
+
+watch(
+  () => formData.firstname ,
+   (newValue) => {
+
+    isvali.value = true
+
+    if(validatename(newValue)){
+      isvali.value = false
+    }
+})
+watch(
+  () => formData.lastname ,
+   (newValue) => {
+
+    isvali.value = true
+
+    if(validatelname(newValue)){
+      isvali.value = false
+    }
+})
+watch(
+  () => formData.phNumber ,
+   (newValue) => {
+
+    isvali.value = true
+
+    if(validatePhnum(newValue)){
+      isvali.value = false
+    }
+})
+
+
 
 
 
@@ -91,24 +152,35 @@ const fullname = computed(() => {
 <template>
   <div class="form_list">
     <div class="fom_child">
-      <h1>Adde Student data</h1>
+      <h1> Your information</h1>
       <div>
         <div class="fullname">
           Fullname : {{ fullname }}
         </div>
-        <div class="from_input">
-          Firstname:
-          <input type="text" v-model="formData.firstname">
-          <div v-if="error.ftname">{{ error.ftname }}</div>
+        <div class="from_input" style="display: flex;">
+          <div>Firstname:</div>
+          <div>
+            <input type="text" v-model="formData.firstname" style="width: 100%;">
+            <div v-if="error.ftname" style="color: red;">{{ error.ftname }}</div>
+          </div>
         </div>
-        <div class="from_input">
-          Lastname:
-          <input type="text" v-model="formData.lastname">
-          <div v-if="error.ltname">{{ error.ltname }}</div>
+        <div class="from_input" style="display: flex;">
+          <div>
+            Lastname:
+          </div>
+          <div>
+            <input type="text" v-model="formData.lastname" style="width: 100%;">
+            <div v-if="error.ltname" style="color: red;">{{ error.ltname }}</div>
+          </div>
         </div>
-        <div class="from_input">
-          Phone number : <span style="padding: 0 10px 0 0">+856</span>
-          <input type="text" v-model="formData.phNumber">
+        <div class="from_input" style="display: flex;">
+          <div>
+            Phone number : <span style="padding: 0 10px 0 0">+856</span>
+          </div>
+          <div>
+            <input type="text" v-model="formData.phNumber" style="width: 100%;">
+            <div v-if="error.phNum" style="color: red;">{{ error.phNum }}</div>
+          </div>
         </div>
         <div class="from_input">
           Address:
@@ -152,12 +224,13 @@ const fullname = computed(() => {
   align-items: center;
   height: 100%;
   .fom_child {
-    margin-top: 3rem;
-    border: 1px solid #000;
+    margin-top: 4rem;
+    border: none;
     border-radius: 20px;
     padding: 2rem;
-    height: 60vh;
+    height: 100%;
     width: 30%;
+    box-shadow: 5px 20px 15px 5px rgb(56, 58, 56);
     h1 {
       text-align: center;
     }
@@ -167,9 +240,8 @@ const fullname = computed(() => {
     .from_input {
       padding: 10px;
       input,select{
-        width: 50%;
+        width: 30%;
         height: 20px;
-        outline: none;
         border-bottom: 2px solid #000;
         border-top: none;
         border-left: none;
@@ -181,7 +253,7 @@ const fullname = computed(() => {
 
     .status{
         display: grid;
-        grid-template-columns: auto auto;
+        grid-template-columns: auto;
         gap: 10px;
         padding: 20px;
     }
