@@ -10,7 +10,7 @@ const router = createRouter({
       name: 'home-list',
       component: HomeView,
     },{
-      path: '/province',
+      path: '/adde',
       name: 'Adde-list',
       component:AddeView
     }

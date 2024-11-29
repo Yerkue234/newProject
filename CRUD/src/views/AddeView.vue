@@ -100,7 +100,6 @@ const validatelname = (newValue) => {
 
 onMounted(async () => {
   await provinceStore.loadData()
-
 })
 
 watch(
@@ -144,7 +143,7 @@ const addeData = () =>{
 
 
 const fullname = computed(() => {
-  return `${formData.firstname}  ${formData.lastname}`
+  return `${formData.firstname}  ${formData.lastname.toUpperCase()}`
 })
 </script>
 
@@ -160,7 +159,7 @@ const fullname = computed(() => {
         <div class="from_input" style="display: flex;">
           <div>Firstname:</div>
           <div>
-            <input type="text" v-model="formData.firstname" style="width: 100%;">
+            <input type="text" v-model="formData.firstname" style="width: 100%; margin-left: .5rem;">
             <div v-if="error.ftname" style="color: red;">{{ error.ftname }}</div>
           </div>
         </div>
@@ -169,7 +168,7 @@ const fullname = computed(() => {
             Lastname:
           </div>
           <div>
-            <input type="text" v-model="formData.lastname" style="width: 100%;">
+            <input type="text" v-model="formData.lastname" style="width: 100%;margin-left: .5rem;">
             <div v-if="error.ltname" style="color: red;">{{ error.ltname }}</div>
           </div>
         </div>
@@ -183,11 +182,30 @@ const fullname = computed(() => {
           </div>
         </div>
         <div class="from_input">
+          Learn :
+          <div class="from_input" style="display: flex;">
+            <div style="display: flex;" >
+              Study:
+              <select style="width: 100%; margin-left: 1rem;">
+                <option v-for="year in provinceStore.years" style="text-align: center;">{{ year }}</option>
+              </select>
+            </div>
+            <div style="display: flex; margin-left: 2rem;">
+              Class:
+              <select style="width: 70%; margin-left: 1rem;">
+                <option v-for="room in provinceStore.classes"> 
+                  {{ room }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="from_input">
           Address:
            <div class="status">
             <div>
               Village:
-              <input type="text" placeholder="village" v-model="formData.addrss.village">
+              <input type="text" placeholder="village" v-model="formData.addrss.village" style="margin-left: .5rem;">
             </div>
             <div>
               City:

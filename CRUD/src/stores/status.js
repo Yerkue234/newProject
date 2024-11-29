@@ -4,7 +4,9 @@ import { defineStore } from 'pinia'
 
 export const useProvinceStore = defineStore('province', {
   state: () => ({
-    list : []
+    list : [],
+    years :['Select','First year','Second year','Third year','Fourth year'],
+    classes : ['Select','IT1','IT2','IT3']
   }),
   actions : {
    async loadData () {
@@ -15,6 +17,6 @@ export const useProvinceStore = defineStore('province', {
     } catch (error) {
         console.log('this is error :' , error);
     }
-    }
+    },
   }
 })
