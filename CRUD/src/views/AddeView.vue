@@ -6,6 +6,11 @@ const formData = reactive({
   firstname : '',
   lastname : '',
   phNumber: '',
+  learn : {
+    year : '',
+    class: ''
+  }
+  ,
   addrss : {
     village: '',
     city : '',
@@ -138,7 +143,7 @@ watch(
 
 
 const addeData = () =>{
-    
+    console.log('this is your Data :' , formData);
   }
 
 
@@ -185,14 +190,14 @@ const fullname = computed(() => {
           Learn :
           <div class="from_input" style="display: flex;">
             <div style="display: flex;" >
-              Study:
-              <select style="width: 100%; margin-left: 1rem;">
+              Year:
+              <select v-model="formData.learn.year" style="width: 100%; margin-left: 1rem;">
                 <option v-for="year in provinceStore.years" style="text-align: center;">{{ year }}</option>
               </select>
             </div>
             <div style="display: flex; margin-left: 2rem;">
               Class:
-              <select style="width: 70%; margin-left: 1rem;">
+              <select v-model="formData.learn.class" style="width: 70%; margin-left: 1rem;">
                 <option v-for="room in provinceStore.classes"> 
                   {{ room }}
                 </option>
