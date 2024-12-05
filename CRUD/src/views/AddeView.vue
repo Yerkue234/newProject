@@ -18,9 +18,13 @@ const formData = reactive({
   }
 })
 
+const addeData = async (ftname , ltname , address , phNum) => {
+  // console.log({ftname,ltname,address,phNum});
+  const datas = {ftname,ltname,address,phNum}
 
-
-
+  
+  await provinceStore.addeData(datas)
+}
 
 const error = ref({
   ftname : null,
@@ -105,6 +109,7 @@ const validatelname = (newValue) => {
 
 onMounted(async () => {
   await provinceStore.loadData()
+
 })
 
 watch(
@@ -139,12 +144,6 @@ watch(
 })
 
 
-
-
-
-const addeData = () =>{
-    console.log('this is your Data :' , formData);
-  }
 
 
 const fullname = computed(() => {
@@ -228,7 +227,9 @@ const fullname = computed(() => {
         </div>
         <div class="form_btn">
           <RouterLink :to="{name : 'home-list'  }">
-            <button @click="addeData()" style="background-color: green;">Adde Data</button>
+            <button @click="addeData(formData.firstname,
+              formData.lastname , formData.addrss , formData.phNumber
+            )" style="background-color: green;">Adde Data</button>
             <button style="background-color: red;">Clean</button>
           </RouterLink>
         </div>

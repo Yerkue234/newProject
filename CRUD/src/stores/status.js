@@ -6,7 +6,8 @@ export const useProvinceStore = defineStore('province', {
   state: () => ({
     list : [],
     years :['First year','Second year','Third year','Fourth year'],
-    classes : ['IT1','IT2','IT3']
+    classes : ['IT1','IT2','IT3'],
+    datas :[],
   }),
   actions : {
    async loadData () {
@@ -18,5 +19,12 @@ export const useProvinceStore = defineStore('province', {
         console.log('this is error :' , error);
     }
     },
+    async addeData (data) {
+      try {
+        this.datas.push(data)
+      } catch (error) {
+        console.log('error',error);
+      }
+    }
   }
 })
