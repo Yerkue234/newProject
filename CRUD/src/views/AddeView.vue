@@ -65,14 +65,14 @@ const validatelname = (newValue) => {
     }
   }
 
-  const validatePhnum = () =>{
+  const validatePhnum = (phNum) =>{
     // const phonePattern = /^[0-9]+$/
     const phonePttern = [1,2,3,4,5,6,7,8]
-    if(!formData.phNumber){
+    if(!phNum){
       error.value.phNum = 'phone number required'
     }
     else{
-      if ( formData.phNumber.length < phonePttern.length){
+      if ( phNum.length < phonePttern.length){
       error.value.phNum = 'your number phone incorrect'
       }else {
         error.value.phNum = null
@@ -130,19 +130,20 @@ watch(
 })
 
 
-const addeData = async (ftname , ltname , address , phNum) => {
-  const datas = {ftname,ltname,address,phNum}
-  if(!datas.ftname || !datas.address || !datas.ltname){
-    console.log('this is not data!');
-  }else{
-    if(!datas.phNum){
-      console.log('this is not num');
-    }else{
-      await provinceStore.addeData(datas)
+const addeData = async (ftname , ltname , address , phNum ,learn) => {
+  const datas = {ftname,ltname,address,phNum , learn}
+  if(!datas.address || !datas.learn || !datas.phNum){
+    if(!datas.phNum || !datas.ftname || datas.ltname){
+      alert('No information')
     }
+  }else if (validatePhnum(phNum)){
+      alert('your number phone incorrect')
+  }else if (!datas.learn.yesr || datas.learn.class){
+    alert('It has not class or year, pleacse select !')
   }
-
-  
+  else{
+    await provinceStore.addeData(datas)
+  }
 }
 
 
@@ -157,6 +158,7 @@ const fullname = computed(() => {
   <div class="form_list">
     <div class="fom_child">
       <h1> Your information</h1>
+      <p>Pleacse ,you get your information in the Form</p>
       <div>
         <div class="fullname">
           Fullname : {{ fullname }}
@@ -229,7 +231,7 @@ const fullname = computed(() => {
         <div class="form_btn">
           <RouterLink :to="{name : 'home-list'  }">
             <button @click="addeData(formData.firstname,
-              formData.lastname , formData.addrss , formData.phNumber
+              formData.lastname , formData.addrss , formData.phNumber ,formData.learn
             )" style="background-color: green;">Adde Data</button>
             <button style="background-color: red;">Clean</button>
           </RouterLink>

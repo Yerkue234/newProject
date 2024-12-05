@@ -3,13 +3,15 @@ import {RouterLink} from 'vue-router'
 import {useProvinceStore} from '../stores/status'
 import { onMounted,ref, watch } from 'vue'
 
-const useProvnce = useProvinceStore()
-const datas = useProvnce.datas
 
-const isVali = ref(false)
+import FristFrom from '../component/FristFrom.vue';
+import SecondFrom from '../component/secondFrom.vue';
+import ThirdFrom from '../component/ThirdFrom.vue';
+import FourFrom from '../component/FourFrom.vue';
 
 
-
+const useProv = useProvinceStore()
+const isvali = useProv.isVali
 
 
 </script>
@@ -17,31 +19,21 @@ const isVali = ref(false)
 <template>
   <div class="list_show">
     <div>
-      <h1>This include data : </h1>
-      <div>
-        <table>
-          <tr>
-            <th>Student</th>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Phone number</th>
-          </tr>
-          <tr v-for="(data , key ) in datas" :key="key++">
-            <td>{{ key }}</td>
-            <td>{{ `${data.ftname} ${data.ltname.toUpperCase()}`}}</td>
-            <tr>
-              <td style="width: 180px;">{{ data.address.village }}</td>
-              <td style="width: 30%;">{{ data.address.city }}</td>
-              <td style="width: 50%;">{{ data.address.province }}</td>
-            </tr>
-            <td>{{ data.phNum }}</td>
-          </tr>
-        </table>
+      <h1 style="text-align: center;">This is show Information  </h1>
+      <div v-if="isvali.first">
+        <FristFrom/>
+      </div>
+      <div v-if="isvali.second">
+        <SecondFrom/>
+      </div>
+      <div v-if="isvali.third">
+        <ThirdFrom/>
+      </div>
+      <div v-if="isvali.fourth">
+        <FourFrom/>
       </div>
       <div>
-        
-      </div>
-      <div>
+        <p> Pleacse ,  Enter the button to adde your information student  </p>
         <RouterLink :to="{name:'Adde-list' , path:'/province'}">
           <button>Adde data</button>
         </RouterLink>
