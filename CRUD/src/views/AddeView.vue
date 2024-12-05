@@ -18,13 +18,6 @@ const formData = reactive({
   }
 })
 
-const addeData = async (ftname , ltname , address , phNum) => {
-  // console.log({ftname,ltname,address,phNum});
-  const datas = {ftname,ltname,address,phNum}
-
-  
-  await provinceStore.addeData(datas)
-}
 
 const error = ref({
   ftname : null,
@@ -43,12 +36,10 @@ const validatename = (newValue) =>{
   if(!newValue){
     error.value.ftname = 'firstname required'
     isvali.value =false
-    console.log('firstname :',isvali.value);
   }
   else if (numberPattern.test(newValue)){
     error.value.ftname = 'firstname is number'
     isvali.value = false
-    console.log('firstname :',isvali.value);
   }else {
     error.value.ftname= null
   }
@@ -59,12 +50,10 @@ const validatelname = (newValue) => {
     if(!newValue){
       error.value.ltname = 'lastname required'
       isvali.value =!isvali.value
-      console.log('lastname :',isvali.value);
     }
     else if (number.test(formData.lastname)){
       error.value.ltname = 'lastname is number'
       isvali.value = !isvali.value
-      console.log('lastname :',isvali.value);
     }else {
       error.value.ltname = null
       if(formData.firstname){
@@ -72,7 +61,6 @@ const validatelname = (newValue) => {
       }else{
         error.value.ftname = 'firstname required'
         isvali.value =false
-        console.log('firstname :',isvali.value);
       }
     }
   }
@@ -94,14 +82,12 @@ const validatelname = (newValue) => {
       }else {
         error.value.ftname = 'firstname required'
         isvali.value =false
-        console.log('firstname :',isvali.value);
       }
       if(formData.lastname){
         error.value.ltname = null
       }else {
         error.value.ltname = 'firstname required'
         isvali.value =false
-        console.log('lastname :',isvali.value);
       }
     }
   }
@@ -143,6 +129,21 @@ watch(
     }
 })
 
+
+const addeData = async (ftname , ltname , address , phNum) => {
+  const datas = {ftname,ltname,address,phNum}
+  if(!datas.ftname || !datas.address || !datas.ltname){
+    console.log('this is not data!');
+  }else{
+    if(!datas.phNum){
+      console.log('this is not num');
+    }else{
+      await provinceStore.addeData(datas)
+    }
+  }
+
+  
+}
 
 
 

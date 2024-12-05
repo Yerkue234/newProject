@@ -6,6 +6,9 @@ import { onMounted,ref, watch } from 'vue'
 const useProvnce = useProvinceStore()
 const datas = useProvnce.datas
 
+const isVali = ref(false)
+
+
 
 
 
@@ -23,7 +26,7 @@ const datas = useProvnce.datas
             <th>Address</th>
             <th>Phone number</th>
           </tr>
-          <tr v-for="(data , key , index) in datas" :key="key++">
+          <tr v-for="(data , key ) in datas" :key="key++">
             <td>{{ key }}</td>
             <td>{{ `${data.ftname} ${data.ltname.toUpperCase()}`}}</td>
             <tr>
